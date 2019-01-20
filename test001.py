@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 import subprocess
 import threading
 
@@ -89,7 +90,7 @@ def enter_on_screenshot(temp_args):
 
 # Tkinter
 root = tk.Tk()
-root.wm_title("HU Controller")
+root.wm_title("M HU Controller")
 
 entry_value = ''
 
@@ -163,6 +164,17 @@ btn_pull = tk.Button(root,
                      text="Pull",
                      command=lambda: threads_button_action("pullAfterChmod", entry_pull_src_path.get(), entry_pull_dst_path.get()))
 btn_pull.grid(row=11, column=0, columnspan=4, sticky='nsew')
+
+notebook = ttk.Notebook(root)
+notebook_page_1 = tk.Frame(notebook)
+notebook.add(notebook_page_1, text='Tab 1')
+lbl_test = tk.Label(notebook_page_1, text="Test")
+lbl_test.grid(row=0, column=0, sticky='nsew')
+
+notebook_page_2 = tk.Frame(notebook)
+notebook.add(notebook_page_2, text='Tab 2')
+
+notebook.grid(row=12, rowspan=4, column=0, columnspan=4, sticky='nsew')
 
 root.pack_propagate(0)
 
