@@ -96,85 +96,78 @@ entry_value = ''
 
 device_number_label = tk.Label(root, text="Connected HU: ", width=25)
 device_number_label.grid(row=0, column=0)
-
 connected_devices_indicator = tk.Entry(root, textvariable=entry_value, width=25)
 connected_devices_indicator.grid(row=0, column=1, stick='nsew')
-
 blank_label = tk.Label(root, text=" ", width=50)
 blank_label.grid(row=0, column=2, columnspan=2)
 
 empty_line = tk.Label(root, text=" ")
-empty_line.grid(row=1, column=0)
-
-
-btn_engineering_mode = tk.Button(root,
-                                 text="ENG Mode",
-                                 command=lambda: threads_button_action("openEngineeringMode"))
-btn_engineering_mode.grid(row=2, column=0, rowspan=2, sticky='nsew')
-btn_telematics_test = tk.Button(root,
-                                text="Telematics Test",
-                                command=lambda: threads_button_action("openTelematicsTest"))
-btn_telematics_test.grid(row=2, column=1, rowspan=2, sticky='nsew')
-
-empty_line2 = tk.Label(root, text=" ")
-empty_line2.grid(row=4, column=0)
-
-btn_input_text = tk.Button(root,
-                           text="Input Text",
-                           command=lambda: threads_button_action("inputText", entry_input_text.get()))
-btn_input_text.grid(row=5, column=0, sticky='nsew')
-
-entry_input_text = tk.Entry(root)
-entry_input_text.grid(row=5, column=1, columnspan=2, sticky='nsew')
-entry_input_text.insert(10, "")
-entry_input_text.bind('<Return>', enter_on_text_input)
-
-empty_line3 = tk.Label(root, text=" ")
-empty_line3.grid(row=6, column=0)
-
-btn_screenshot = tk.Button(root,
-                           text="Screenshot",
-                           command=lambda: threads_button_action("takeScreenshot", entry_screenshot_path.get()))
-btn_screenshot.grid(row=7, column=0, sticky='nsew')
-
-entry_screenshot_path = tk.Entry(root)
-entry_screenshot_path.grid(row=7, column=1, columnspan=2, sticky='nsew')
-entry_screenshot_path.insert(10, os.path.expanduser("~\Desktop"))
-entry_screenshot_path.bind('<Return>', enter_on_screenshot)
-
-empty_line4 = tk.Label(root, text=" ")
-empty_line4.grid(row=8, column=0)
-
-
-lbl_src_path = tk.Label(root, text=" * Source Path: ")
-lbl_src_path.grid(row=9, column=0, sticky='e')
-
-entry_pull_src_path = tk.Entry(root)
-entry_pull_src_path.grid(row=9, column=1, columnspan=3, sticky='nsew')
-entry_pull_src_path.insert(10, "/data/data/com.hkmc.telematics.common.db/databases/VehicleSetting.db")
-
-lbl_dst_path = tk.Label(root, text=" * Destination Path: ")
-lbl_dst_path.grid(row=10, column=0, sticky='e')
-
-entry_pull_dst_path = tk.Entry(root)
-entry_pull_dst_path.grid(row=10, column=1, columnspan=3, sticky='nsew')
-entry_pull_dst_path.insert(10, os.path.expanduser("~\Desktop"))
-
-btn_pull = tk.Button(root,
-                     text="Pull",
-                     command=lambda: threads_button_action("pullAfterChmod", entry_pull_src_path.get(), entry_pull_dst_path.get()))
-btn_pull.grid(row=11, column=0, columnspan=4, sticky='nsew')
+empty_line.grid(row=1, column=4)
 
 notebook = ttk.Notebook(root)
 notebook_page_1 = tk.Frame(notebook)
 notebook.add(notebook_page_1, text='Tab 1')
-lbl_test = tk.Label(notebook_page_1, text="Test")
-lbl_test.grid(row=0, column=0, sticky='nsew')
+
+btn_engineering_mode = tk.Button(notebook_page_1,
+                                 text="ENG Mode",
+                                 command=lambda: threads_button_action("openEngineeringMode"))
+btn_engineering_mode.grid(row=0, column=0, rowspan=2, sticky='nsew')
+btn_telematics_test = tk.Button(notebook_page_1,
+                                text="Telematics Test",
+                                command=lambda: threads_button_action("openTelematicsTest"))
+btn_telematics_test.grid(row=0, column=1, rowspan=2, sticky='nsew')
+blank_label_1 = tk.Label(notebook_page_1, text=" ", width = 70)
+blank_label_1.grid(row=0, column=2, columnspan=2)
+
+empty_line2 = tk.Label(notebook_page_1, text=" ")
+empty_line2.grid(row=2, column=0)
+
+btn_input_text = tk.Button(notebook_page_1,
+                           text="Input Text",
+                           command=lambda: threads_button_action("inputText", entry_input_text.get()))
+btn_input_text.grid(row=3, column=0, sticky='nsew')
+entry_input_text = tk.Entry(notebook_page_1)
+entry_input_text.grid(row=3, column=1, columnspan=2, sticky='nsew')
+entry_input_text.insert(10, "")
+entry_input_text.bind('<Return>', enter_on_text_input)
+
+empty_line3 = tk.Label(notebook_page_1, text=" ")
+empty_line3.grid(row=4, column=0)
+
+btn_screenshot = tk.Button(notebook_page_1,
+                           text="Screenshot",
+                           command=lambda: threads_button_action("takeScreenshot", entry_screenshot_path.get()))
+btn_screenshot.grid(row=5, column=0, sticky='nsew')
+entry_screenshot_path = tk.Entry(notebook_page_1)
+entry_screenshot_path.grid(row=5, column=1, columnspan=2, sticky='nsew')
+entry_screenshot_path.insert(10, os.path.expanduser("~\Desktop"))
+entry_screenshot_path.bind('<Return>', enter_on_screenshot)
+
+empty_line4 = tk.Label(notebook_page_1, text=" ")
+empty_line4.grid(row=6, column=0)
+
+lbl_src_path = tk.Label(notebook_page_1, text=" * Source Path: ")
+lbl_src_path.grid(row=7, column=0, sticky='e')
+entry_pull_src_path = tk.Entry(notebook_page_1)
+entry_pull_src_path.grid(row=7, column=1, columnspan=3, sticky='nsew')
+entry_pull_src_path.insert(10, "/data/data/com.hkmc.telematics.common.db/databases/VehicleSetting.db")
+
+lbl_dst_path = tk.Label(notebook_page_1, text=" * Destination Path: ")
+lbl_dst_path.grid(row=8, column=0, sticky='e')
+entry_pull_dst_path = tk.Entry(notebook_page_1)
+entry_pull_dst_path.grid(row=8, column=1, columnspan=3, sticky='nsew')
+entry_pull_dst_path.insert(10, os.path.expanduser("~\Desktop"))
+
+btn_pull = tk.Button(notebook_page_1,
+                     text="Pull",
+                     command=lambda: threads_button_action("pullAfterChmod", entry_pull_src_path.get(), entry_pull_dst_path.get()))
+btn_pull.grid(row=9, column=0, columnspan=4, sticky='nsew')
 
 notebook_page_2 = tk.Frame(notebook)
 notebook.add(notebook_page_2, text='Tab 2')
 
-notebook.grid(row=12, rowspan=4, column=0, columnspan=4, sticky='nsew')
+notebook.grid(row=2, rowspan=4, column=0, columnspan=4, sticky='nsew')
+
 
 root.pack_propagate(0)
 
