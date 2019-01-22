@@ -147,7 +147,7 @@ def auto_provisioning(each_device):
     each_device.shell("input tap " + str(uibtn_xy[0]) + " " + str(uibtn_xy[1]))
 
 
-def serial_chmod(file_src_path):
+def serial_port_pull(file_src_path):
     ser = serial.Serial('COM3', 115200)
     print("Hello! COM Port Connected!", ser)
     # ser.open()
@@ -192,13 +192,60 @@ def pull_after_chmod(each_device, file_src_path, file_dst_path):
     ro_product_model = each_device.shell("getprop | grep ro.product.model")
     if "[wp_daudioplus" in ro_product_model:
         print("GEN5 WIDE: COM Port needed")
-        serial_chmod(file_src_path)
+        serial_port_pull(file_src_path)
     else:
         pull_detour_ready(each_device, file_src_path)
         print(each_device.shell("d_audio -c chmod 777 " + file_src_path))
 
     parse_list = file_src_path.split("/")
     print(file_src_path, len(parse_list), parse_list[len(parse_list) - 1])
+
+    print("File detour on HU is complete. Start Pulling...")
+    each_device.pull("storage/log/" + parse_list[len(parse_list) - 1],
+                     file_dst_path + "/" + parse_list[len(parse_list) - 1])
+    each_device.shell("rm /storage/log/" + parse_list[len(parse_list) - 1])
+
+
+def serial_port_push(file_src_path):
+    ser = serial.Serial('COM3', 115200)
+    print("Hello! COM Port Connected!", ser)
+    # ser.open()
+
+    parse_list = file_src_path.split("/")
+    print(file_src_path, len(parse_list), parse_list[len(parse_list) - 1])
+
+    ser.write(b'd_audio\r\n')
+    ser.readline(20)
+    print("Entered d_audio")
+    raw_str_command = "cp " + file_src_path + " /storage/log/" + "\r\n"
+    print(raw_str_command)
+    bytes_str_command = str.encode(raw_str_command)
+    # print(type(bytes_str_command))
+    ser.write(bytes_str_command)
+
+    raw_str_command = "chmod 777 /storage/log/" + parse_list[len(parse_list) - 1] + "\r\n"
+    print(raw_str_command)
+    bytes_str_command = str.encode(raw_str_command)
+    # print(type(bytes_str_command))
+    ser.write(bytes_str_command)
+
+    print(ser.readline(20))
+
+
+def push_after_chmod(each_device, file_src_path, file_dst_path):
+    print("Not Yet Implemented.....")
+    ro_product_model = each_device.shell("getprop | grep ro.product.model")
+
+    parse_list = file_src_path.split("/")
+    print(file_src_path, len(parse_list), parse_list[len(parse_list) - 1])
+
+    if "[wp_daudioplus" in ro_product_model:
+        print("GEN5 WIDE: COM Port needed")
+        serial_port_push(file_src_path)
+    else:
+        pull_detour_ready(each_device, file_src_path)
+        print(each_device.shell("d_audio -c chmod 777 " + file_src_path))
+
 
     print("File detour on HU is complete. Start Pulling...")
     each_device.pull("storage/log/" + parse_list[len(parse_list) - 1],
