@@ -53,6 +53,8 @@ class AdbDeviceThread(threading.Thread):
             take_screenshot(self.device, self.arg1)
         if self.command == "pullAfterChmod":
             pull_after_chmod(self.device, self.arg1, self.arg2)
+        if self.command == "pushAfterChmod":
+            push_after_chmod(self.device, self.arg1, self.arg2)
 
         print("Exiting " + self.name)
 
@@ -146,14 +148,14 @@ entry_screenshot_path.bind('<Return>', enter_on_screenshot)
 empty_line4 = tk.Label(notebook_page_1, text=" ")
 empty_line4.grid(row=6, column=0)
 
-lbl_src_path = tk.Label(notebook_page_1, text=" * Source Path: ")
-lbl_src_path.grid(row=7, column=0, sticky='e')
+lbl_pull_src_path = tk.Label(notebook_page_1, text=" * Source Path: ")
+lbl_pull_src_path.grid(row=7, column=0, sticky='e')
 entry_pull_src_path = tk.Entry(notebook_page_1)
 entry_pull_src_path.grid(row=7, column=1, columnspan=3, sticky='nsew')
 entry_pull_src_path.insert(10, "/data/data/com.hkmc.telematics.common.db/databases/VehicleSetting.db")
 
-lbl_dst_path = tk.Label(notebook_page_1, text=" * Destination Path: ")
-lbl_dst_path.grid(row=8, column=0, sticky='e')
+lbl_pull_dst_path = tk.Label(notebook_page_1, text=" * Destination Path: ")
+lbl_pull_dst_path.grid(row=8, column=0, sticky='e')
 entry_pull_dst_path = tk.Entry(notebook_page_1)
 entry_pull_dst_path.grid(row=8, column=1, columnspan=3, sticky='nsew')
 entry_pull_dst_path.insert(10, os.path.expanduser("~\Desktop"))
@@ -162,6 +164,30 @@ btn_pull = tk.Button(notebook_page_1,
                      text="Pull",
                      command=lambda: threads_button_action("pullAfterChmod", entry_pull_src_path.get(), entry_pull_dst_path.get()))
 btn_pull.grid(row=9, column=0, columnspan=4, sticky='nsew')
+
+###
+
+empty_line5 = tk.Label(notebook_page_1, text=" ")
+empty_line5.grid(row=10, column=0)
+
+lbl_push_src_path = tk.Label(notebook_page_1, text=" * Source Path: ")
+lbl_push_src_path.grid(row=11, column=0, sticky='e')
+entry_push_src_path = tk.Entry(notebook_page_1)
+entry_push_src_path.grid(row=11, column=1, columnspan=3, sticky='nsew')
+entry_push_src_path.insert(10, os.path.expanduser("~\Desktop"))
+
+lbl_push_dst_path = tk.Label(notebook_page_1, text=" * Destination Path: ")
+lbl_push_dst_path.grid(row=12, column=0, sticky='e')
+entry_push_dst_path = tk.Entry(notebook_page_1)
+entry_push_dst_path.grid(row=12, column=1, columnspan=3, sticky='nsew')
+entry_push_dst_path.insert(10, "/sdcard/DCIM/screenshot/")
+
+btn_push = tk.Button(notebook_page_1,
+                     text="Push",
+                     command=lambda: threads_button_action("pushAfterChmod", entry_push_src_path.get(), entry_push_dst_path.get()))
+btn_push.grid(row=13, column=0, columnspan=4, sticky='nsew')
+
+###
 
 notebook_page_2 = tk.Frame(notebook)
 notebook.add(notebook_page_2, text='Tab 2')

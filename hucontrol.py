@@ -236,17 +236,22 @@ def push_after_chmod(each_device, file_src_path, file_dst_path):
     print("Not Yet Implemented.....")
     ro_product_model = each_device.shell("getprop | grep ro.product.model")
 
-    parse_list = file_src_path.split("/")
+    parse_list = file_src_path.split("\\")
     print(file_src_path, len(parse_list), parse_list[len(parse_list) - 1])
 
+    if file_dst_path.endswith('/') == False:
+        file_dst_path += "/"
+        print(file_dst_path)
+
     if "[wp_daudioplus" in ro_product_model:
+        each_device.push(file_src_path, "/sdcard/log/" + parse_list[len(parse_list) - 1])
+        print("File pushed to /sdcard/log")
         print("GEN5 WIDE: COM Port needed")
         serial_port_push(file_src_path)
+    elif "[daudioplus" in ro_product_model:
+        each_device.push(file_src_path, "/sdcard/log/" + parse_list[len(parse_list) - 1])
+        print(each_device.shell("d_audio -c chmod 777 " + file_dst_path + parse_list[len(parse_list) - 1]))
     else:
-        pull_detour_ready(each_device, file_src_path)
-        print(each_device.shell("d_audio -c chmod 777 " + file_src_path))
+        print("Unknown HU. Trying to push directly without detour...")
+        each_device.push(file_src_path, file_dst_path + parse_list[len(parse_list) - 1])
 
-
-    print("File detour on HU is complete. Start Pulling...")
-    each_device.pull("storage/log/" + parse_list[len(parse_list) - 1],
-                     file_dst_path + "/" + parse_list[len(parse_list) - 1])
