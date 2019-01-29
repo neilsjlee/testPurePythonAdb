@@ -260,13 +260,14 @@ def push_after_chmod(each_device, file_src_path, file_dst_path):
         bytes_str_command = str.encode(raw_str_command)
         ser.write(bytes_str_command)
 
-        print(ser.readline(20))
+        print(ser.readline(80))
+        print(ser.readline(80))
 
         # raw_str_command = "rm /storage/log/" + parse_list[len(parse_list) - 1] + "\r\n"
         # print(raw_str_command)
         # bytes_str_command = str.encode(raw_str_command)
         # ser.write(bytes_str_command)
-        serial_command("rm /storage/log/" + parse_list[len(parse_list) - 1])
+        serial_command(ser, "rm /storage/log/" + parse_list[len(parse_list) - 1])
 
         print(ser.readline(20))
 
@@ -279,8 +280,7 @@ def push_after_chmod(each_device, file_src_path, file_dst_path):
         print(each_device.push(file_src_path, file_dst_path + parse_list[len(parse_list) - 1]))
 
 
-def serial_command(cmd):
-    ser = serial.Serial('COM3', 115200)
+def serial_command(ser, cmd):
     ser.write(b'd_audio\r\n')
     ser.readline(20)
 
