@@ -174,7 +174,7 @@ lbl_push_src_path = tk.Label(notebook_page_1, text=" * Source Path: ")
 lbl_push_src_path.grid(row=11, column=0, sticky='e')
 entry_push_src_path = tk.Entry(notebook_page_1)
 entry_push_src_path.grid(row=11, column=1, columnspan=3, sticky='nsew')
-entry_push_src_path.insert(10, os.path.expanduser("~\Desktop"))
+entry_push_src_path.insert(10, os.path.expanduser("~\Desktop") + "\\")
 
 lbl_push_dst_path = tk.Label(notebook_page_1, text=" * Destination Path: ")
 lbl_push_dst_path.grid(row=12, column=0, sticky='e')
@@ -244,12 +244,14 @@ def main_loop():
         btn_input_text.config(state="disabled")
         btn_screenshot.config(state="disabled")
         btn_pull.config(state="disabled")
+        btn_push.config(state="disabled")
     else:
         btn_engineering_mode.config(state="normal")
         btn_telematics_test.config(state="normal")
         btn_input_text.config(state="normal")
         btn_screenshot.config(state="normal")
         btn_pull.config(state="normal")
+        btn_push.config(state="normal")
 
 
 root.after(1000, main_loop)

@@ -244,14 +244,49 @@ def push_after_chmod(each_device, file_src_path, file_dst_path):
         print(file_dst_path)
 
     if "[wp_daudioplus" in ro_product_model:
-        each_device.push(file_src_path, "/sdcard/log/" + parse_list[len(parse_list) - 1])
-        print("File pushed to /sdcard/log")
+        each_device.push(file_src_path, "/storage/log/" + parse_list[len(parse_list) - 1])
+        print("File pushed to /storage/log")
         print("GEN5 WIDE: COM Port needed")
-        serial_port_push(file_src_path)
+
+        #serial_port_push(file_src_path)
+
+        ser = serial.Serial('COM3', 115200)
+        ser.write(b'd_audio\r\n')
+        ser.readline(20)
+        print("Entered d_audio")
+
+        raw_str_command = "cp /storage/log/" + parse_list[len(parse_list) - 1] + " " + file_dst_path + "\r\n"
+        print(raw_str_command)
+        bytes_str_command = str.encode(raw_str_command)
+        ser.write(bytes_str_command)
+
+        print(ser.readline(20))
+
+        # raw_str_command = "rm /storage/log/" + parse_list[len(parse_list) - 1] + "\r\n"
+        # print(raw_str_command)
+        # bytes_str_command = str.encode(raw_str_command)
+        # ser.write(bytes_str_command)
+        serial_command("rm /storage/log/" + parse_list[len(parse_list) - 1])
+
+        print(ser.readline(20))
+
     elif "[daudioplus" in ro_product_model:
-        each_device.push(file_src_path, "/sdcard/log/" + parse_list[len(parse_list) - 1])
-        print(each_device.shell("d_audio -c chmod 777 " + file_dst_path + parse_list[len(parse_list) - 1]))
+        each_device.push(file_src_path, "/storage/log/" + parse_list[len(parse_list) - 1])
+        print(each_device.shell("d_audio -c cp /storage/log/" + parse_list[len(parse_list) - 1] + " " + file_dst_path))
+        each_device.shell("rm /storage/log/" + parse_list[len(parse_list) - 1])
     else:
         print("Unknown HU. Trying to push directly without detour...")
-        each_device.push(file_src_path, file_dst_path + parse_list[len(parse_list) - 1])
+        print(each_device.push(file_src_path, file_dst_path + parse_list[len(parse_list) - 1]))
+
+
+def serial_command(cmd):
+    ser = serial.Serial('COM3', 115200)
+    ser.write(b'd_audio\r\n')
+    ser.readline(20)
+
+    raw_str_command = cmd + "\r\n"
+    print(raw_str_command)
+    bytes_str_command = str.encode(raw_str_command)
+    ser.write(bytes_str_command)
+    print(ser.readline(20))
 
